@@ -1,0 +1,172 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}Delete Post{% endblock %}
+
+{% block content %}
+<style>
+  .delete-container {
+    background: rgba(231, 76, 60, 0.1);
+    backdrop-filter: blur(15px);
+    border: 2px solid rgba(231, 76, 60, 0.3);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 15px 35px rgba(231, 76, 60, 0.1);
+    animation: shakeIn 0.6s ease-out;
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  @keyframes shakeIn {
+    0% {
+      transform: scale(0.8) rotate(-5deg);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1.05) rotate(2deg);
+    }
+    100% {
+      transform: scale(1) rotate(0deg);
+      opacity: 1;
+    }
+  }
+
+  .delete-container h2 {
+    font-size: 36px;
+    font-weight: 800;
+    margin-bottom: 25px;
+    background: linear-gradient(45deg, #e74c3c, #ff6b6b);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientShift 3s ease-in-out infinite;
+  }
+
+  @keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .delete-container p {
+    font-size: 18px;
+    margin-bottom: 30px;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.6;
+    animation: fadeInUp 0.5s ease-out 0.2s both;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .delete-container strong {
+    background: linear-gradient(45deg, #fff, #f8f9fa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+  }
+
+  .button-group {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    animation: fadeInUp 0.5s ease-out 0.4s both;
+  }
+
+  .delete-btn {
+    padding: 15px 30px;
+    border: none;
+    border-radius: 25px;
+    font-weight: 700;
+    font-size: 16px;
+    color: #fff;
+    background: linear-gradient(45deg, #e74c3c, #c0392b);
+    background-size: 200% 200%;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cancel-btn {
+    padding: 15px 30px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 25px;
+    font-weight: 700;
+    font-size: 16px;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .delete-btn::before,
+  .cancel-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s;
+  }
+
+  .delete-btn:hover::before,
+  .cancel-btn:hover::before {
+    left: 100%;
+  }
+
+  .delete-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(231, 76, 60, 0.3);
+    background-position: 100% 50%;
+  }
+
+  .cancel-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .delete-btn:active,
+  .cancel-btn:active {
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: 600px) {
+    .button-group {
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .delete-btn,
+    .cancel-btn {
+      width: 200px;
+    }
+  }
+</style>
+
+<div class="delete-container">
+  <h2>🗑️ Delete Post</h2>
+  <p>Are you sure you want to delete "<strong>{{ object.title }}</strong>"?</p>
+
+  <form method="POST" style="display: inline;">
+    {% csrf_token %}
+    <div class="button-group">
+      <button type="submit" class="delete-btn">❌ Yes, Delete</button>
+      <a href="{% url 'home' %}" class="cancel-btn">↩️ Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,157 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}Edit Post{% endblock %}
+
+{% block content %}
+<style>
+  .edit-container {
+    background: rgba(255, 193, 7, 0.1);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 193, 7, 0.3);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 15px 35px rgba(255, 193, 7, 0.1);
+    animation: editSlideIn 0.6s ease-out;
+  }
+
+  @keyframes editSlideIn {
+    from {
+      transform: translateX(-30px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  .edit-container h2 {
+    font-size: 36px;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 30px;
+    background: linear-gradient(45deg, #ffc107, #ff9800, #f57c00);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientShift 3s ease-in-out infinite;
+  }
+
+  @keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .edit-container form p {
+    margin-bottom: 25px;
+    animation: fadeInUp 0.5s ease-out;
+  }
+
+  .edit-container form p:nth-child(2) { animation-delay: 0.1s; }
+  .edit-container form p:nth-child(3) { animation-delay: 0.2s; }
+  .edit-container form p:nth-child(4) { animation-delay: 0.3s; }
+
+  @keyframes fadeInUp {
+    from {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .edit-container label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 16px;
+  }
+
+  .edit-container input,
+  .edit-container textarea {
+    width: 100%;
+    padding: 15px 20px;
+    border: 2px solid rgba(255, 193, 7, 0.3);
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    color: #fff;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    font-family: inherit;
+  }
+
+  .edit-container input::placeholder,
+  .edit-container textarea::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .edit-container input:focus,
+  .edit-container textarea:focus {
+    outline: none;
+    border-color: #ffc107;
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(255, 193, 7, 0.2);
+  }
+
+  .edit-container textarea {
+    min-height: 120px;
+    resize: vertical;
+  }
+
+  .update-btn {
+    width: 100%;
+    padding: 18px 30px;
+    border: none;
+    border-radius: 25px;
+    font-weight: 700;
+    font-size: 18px;
+    color: #fff;
+    background: linear-gradient(45deg, #ffc107, #ff9800);
+    background-size: 200% 200%;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    animation: fadeInUp 0.5s ease-out 0.4s both;
+  }
+
+  .update-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s;
+  }
+
+  .update-btn:hover::before {
+    left: 100%;
+  }
+
+  .update-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(255, 193, 7, 0.3);
+    background-position: 100% 50%;
+  }
+
+  .update-btn:active {
+    transform: translateY(-1px);
+  }
+</style>
+
+<div class="edit-container">
+  <h2>✏️ Edit Post</h2>
+  <form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="update-btn">💫 Update</button>
+  </form>
+</div>
+{% endblock %}

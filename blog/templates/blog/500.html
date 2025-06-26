@@ -1,0 +1,152 @@
+{% extends "blog/base.html" %}
+{% block title %}Server Error{% endblock %}
+{% block content %}
+<style>
+    .error-page {
+        text-align: center;
+        padding: 60px 40px;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(25px);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 25px;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+        animation: errorPageEntry 1s ease-out;
+        position: relative;
+        overflow: hidden;
+        margin: 20px 0;
+    }
+
+    @keyframes errorPageEntry {
+        from {
+            transform: translateY(50px) scale(0.9);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+    }
+
+    .error-page::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, 
+            transparent, 
+            rgba(255, 193, 7, 0.15), 
+            rgba(255, 107, 107, 0.1), 
+            transparent);
+        animation: errorShimmer 3s ease-in-out infinite;
+    }
+
+    @keyframes errorShimmer {
+        0%, 100% {
+            left: -100%;
+        }
+        50% {
+            left: 100%;
+        }
+    }
+
+    .error-page h1 {
+        font-size: 3.5rem;
+        font-weight: 800;
+        margin-bottom: 25px;
+        background: linear-gradient(135deg, #ffc107 0%, #ff6b6b 50%, #e74c3c 100%);
+        background-size: 300% 300%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: gradientShift 4s ease-in-out infinite;
+        text-shadow: 0 0 30px rgba(255, 193, 7, 0.3);
+        position: relative;
+        z-index: 1;
+    }
+
+    @keyframes gradientShift {
+        0%, 100% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+    }
+
+    .error-page p {
+        font-size: 1.2rem;
+        color: rgba(255, 255, 255, 0.85);
+        margin-bottom: 35px;
+        line-height: 1.7;
+        font-weight: 500;
+        position: relative;
+        z-index: 1;
+    }
+
+    .error-page a {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 16px 32px;
+        background: linear-gradient(135deg, #ffc107, #ff6b6b);
+        color: white;
+        text-decoration: none;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 25px rgba(255, 193, 7, 0.3);
+        position: relative;
+        z-index: 1;
+        overflow: hidden;
+    }
+
+    .error-page a::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        transition: left 0.5s;
+    }
+
+    .error-page a:hover::before {
+        left: 100%;
+    }
+
+    .error-page a:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 15px 40px rgba(255, 193, 7, 0.4);
+        background: linear-gradient(135deg, #ff6b6b, #ffc107);
+    }
+
+    @media (max-width: 768px) {
+        .error-page {
+            padding: 40px 25px;
+        }
+        
+        .error-page h1 {
+            font-size: 2.5rem;
+        }
+        
+        .error-page p {
+            font-size: 1rem;
+        }
+        
+        .error-page a {
+            padding: 14px 28px;
+            font-size: 1rem;
+        }
+    }
+</style>
+
+<div class="error-page">
+    <h1>🚨 500 - Internal Server Error</h1>
+    <p>Something went wrong on our end. We're fixing it!</p>
+    <a href="{% url 'home' %}">← Back to Home</a>
+</div>
+{% endblock %}

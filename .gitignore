@@ -331,6 +331,10 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+env/
+venv/
+db.sqlite3
+.env
 
 # Cake - Uncomment if you are using it
 # tools/**

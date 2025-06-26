@@ -1,0 +1,176 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <div class="form-header">
+        <h2>🚀 Join the Community</h2>
+        <p class="form-subtitle">Create your account and start sharing</p>
+    </div>
+    
+    <form method="POST" class="modern-form">
+        {% csrf_token %}
+        <div class="form-fields">
+            {{ form.as_p }}
+        </div>
+        <button type="submit" class="submit-btn">
+            <span class="btn-text">Create Account</span>
+            <span class="btn-icon">✨</span>
+        </button>
+    </form>
+</div>
+
+<style>
+.form-container {
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.form-header h2 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+.form-subtitle {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+}
+
+.modern-form {
+    text-align: left;
+}
+
+.form-fields p {
+    margin-bottom: 25px;
+    position: relative;
+}
+
+.form-fields label {
+    display: block;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+}
+
+.form-fields input {
+    width: 100%;
+    padding: 15px 20px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    color: #fff;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.form-fields input:focus {
+    outline: none;
+    border-color: #4ecdc4;
+    box-shadow: 0 0 20px rgba(78, 205, 196, 0.3);
+    transform: translateY(-2px);
+}
+
+.form-fields input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.form-fields ul {
+    margin-top: 8px;
+    padding-left: 0;
+}
+
+.form-fields ul li {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.85rem;
+    margin-bottom: 5px;
+    padding-left: 20px;
+    position: relative;
+    background: transparent;
+    border: none;
+    animation: none;
+}
+
+.form-fields ul li::before {
+    content: '•';
+    color: #4ecdc4;
+    position: absolute;
+    left: 0;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 18px 30px;
+    border: none;
+    border-radius: 25px;
+    background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+    background-size: 200% 200%;
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.submit-btn:hover {
+    background-position: 100% 50%;
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+}
+
+.btn-icon {
+    transition: transform 0.3s ease;
+}
+
+.submit-btn:hover .btn-icon {
+    transform: rotate(180deg) scale(1.2);
+}
+
+/* Style error messages */
+.form-fields .errorlist {
+    background: rgba(231, 76, 60, 0.2);
+    border: 1px solid rgba(231, 76, 60, 0.3);
+    border-radius: 10px;
+    padding: 10px 15px;
+    margin-top: 8px;
+    margin-bottom: 0;
+}
+
+.form-fields .errorlist li {
+    color: #ffb3b3;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+    padding-left: 0;
+}
+
+.form-fields .errorlist li::before {
+    content: '⚠️';
+    margin-right: 8px;
+}
+
+.form-fields .errorlist li:last-child {
+    margin-bottom: 0;
+}
+</style>
+{% endblock %}

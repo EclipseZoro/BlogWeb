@@ -1,0 +1,554 @@
+<!-- HOME TEMPLATE (home.html) -->
+{% extends 'blog/base.html' %}
+
+{% block title %}Home - My Blog{% endblock %}
+
+{% block content %}
+<style>
+  .home-header {
+    text-align: center;
+    margin-bottom: 40px;
+    animation: titleBounce 0.8s ease-out;
+  }
+
+  @keyframes titleBounce {
+    0% {
+      transform: translateY(-50px) scale(0.8);
+      opacity: 0;
+    }
+    60% {
+      transform: translateY(10px) scale(1.05);
+    }
+    100% {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+  }
+
+  .home-header h1 {
+    font-size: 48px;
+    font-weight: 900;
+    background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientFlow 4s ease-in-out infinite;
+    margin-bottom: 0;
+  }
+
+  @keyframes gradientFlow {
+    0%, 100% { background-position: 0% 50%; }
+    25% { background-position: 100% 50%; }
+    50% { background-position: 100% 100%; }
+    75% { background-position: 0% 100%; }
+  }
+
+  .posts-container {
+    display: grid;
+    gap: 30px;
+    animation: fadeIn 0.8s ease-out 0.3s both;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .post-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+    animation: slideInUp 0.6s ease-out;
+  }
+
+  .post-card:nth-child(odd) {
+    animation-delay: 0.1s;
+  }
+
+  .post-card:nth-child(even) {
+    animation-delay: 0.2s;
+  }
+
+  @keyframes slideInUp {
+    from {
+      transform: translateY(50px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .post-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #4ecdc4, transparent);
+    transition: left 0.6s ease;
+  }
+
+  .post-card:hover::before {
+    left: 100%;
+  }
+
+  .post-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+    border-color: rgba(78, 205, 196, 0.3);
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .post-card h2 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    background: linear-gradient(45deg, #fff, #f8f9fa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: all 0.3s ease;
+  }
+
+  .post-card:hover h2 {
+    background: linear-gradient(45deg, #4ecdc4, #45b7d1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .post-content {
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.7;
+    margin-bottom: 20px;
+    font-size: 16px;
+  }
+
+  .post-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .post-author {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .post-author a {
+    color: #4ecdc4;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+
+  .post-author a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #4ecdc4;
+    transition: width 0.3s ease;
+  }
+
+  .post-author a:hover::after {
+    width: 100%;
+  }
+
+  .post-author a:hover {
+    color: #45b7d1;
+  }
+
+  /* Beautiful Attachment Styling */
+  .attachment-container {
+    margin-top: 15px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .attachment-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(78, 205, 196, 0.1), transparent);
+    transition: left 0.5s ease;
+  }
+
+  .attachment-container:hover::before {
+    left: 100%;
+  }
+
+  .attachment-container:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(78, 205, 196, 0.2);
+    border-color: rgba(78, 205, 196, 0.3);
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .attachment-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: #4ecdc4;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+  }
+
+  .attachment-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(45deg, #4ecdc4, #45b7d1);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .attachment-icon::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.4s ease;
+  }
+
+  .attachment-link:hover .attachment-icon::before {
+    left: 100%;
+  }
+
+  .attachment-link:hover .attachment-icon {
+    transform: rotate(10deg) scale(1.1);
+    box-shadow: 0 5px 15px rgba(78, 205, 196, 0.4);
+  }
+
+  .attachment-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .attachment-title {
+    font-weight: 700;
+    font-size: 15px;
+    color: #fff;
+  }
+
+  .attachment-subtitle {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 500;
+  }
+
+  .attachment-link:hover {
+    color: #45b7d1;
+  }
+
+  .attachment-link:hover .attachment-title {
+    color: #4ecdc4;
+  }
+
+  .post-actions {
+    display: flex;
+    gap: 15px;
+  }
+
+  .action-link {
+    padding: 8px 16px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 13px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .edit-link {
+    background: rgba(255, 193, 7, 0.2);
+    color: #ffc107;
+    border: 1px solid rgba(255, 193, 7, 0.3);
+  }
+
+  .delete-link {
+    background: rgba(231, 76, 60, 0.2);
+    color: #e74c3c;
+    border: 1px solid rgba(231, 76, 60, 0.3);
+  }
+
+  .action-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .edit-link:hover {
+    background: rgba(255, 193, 7, 0.3);
+    border-color: #ffc107;
+  }
+
+  .delete-link:hover {
+    background: rgba(231, 76, 60, 0.3);
+    border-color: #e74c3c;
+  }
+
+  .post-divider {
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    border: none;
+    margin: 0;
+    opacity: 0.5;
+  }
+
+  .no-posts {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 18px;
+    padding: 60px 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    border: 2px dashed rgba(255, 255, 255, 0.2);
+  }
+
+  /* Pagination Styles */
+  .pagination-container {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    animation: fadeIn 0.8s ease-out 0.5s both;
+  }
+
+  .pagination-link {
+    padding: 12px 20px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 25px;
+    color: #4ecdc4;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    min-width: 50px;
+    text-align: center;
+  }
+
+  .pagination-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(78, 205, 196, 0.1), transparent);
+    transition: left 0.4s ease;
+  }
+
+  .pagination-link:hover::before {
+    left: 100%;
+  }
+
+  .pagination-link:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 10px 25px rgba(78, 205, 196, 0.2);
+    border-color: rgba(78, 205, 196, 0.4);
+    background: rgba(78, 205, 196, 0.1);
+    color: #fff;
+  }
+
+  .pagination-current {
+    padding: 12px 20px;
+    background: rgba(78, 205, 196, 0.2);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(78, 205, 196, 0.4);
+    border-radius: 25px;
+    color: #fff;
+    font-weight: 700;
+    font-size: 14px;
+    min-width: 50px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(78, 205, 196, 0.3);
+    position: relative;
+  }
+
+  .pagination-current::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(78, 205, 196, 0.3) 0%, transparent 70%);
+    transform: translate(-50%, -50%);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 0.7;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+  }
+
+  .pagination-separator {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 16px;
+    padding: 0 10px;
+  }
+
+  @media (max-width: 768px) {
+    .home-header h1 {
+      font-size: 36px;
+    }
+    
+    .post-card {
+      padding: 20px;
+    }
+    
+    .post-meta {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .post-actions {
+      margin-top: 10px;
+    }
+
+    .pagination-container {
+      gap: 10px;
+      margin-top: 30px;
+    }
+
+    .pagination-link,
+    .pagination-current {
+      padding: 10px 16px;
+      font-size: 13px;
+      min-width: 40px;
+    }
+
+    .attachment-container {
+      padding: 12px;
+    }
+
+    .attachment-link {
+      gap: 10px;
+    }
+
+    .attachment-icon {
+      width: 35px;
+      height: 35px;
+      font-size: 16px;
+    }
+  }
+</style>
+
+<div class="home-header">
+  <h1>🌟 Blog Posts</h1>
+</div>
+{% if request.GET.q %}
+  <p>Search results for "<strong>{{ request.GET.q }}</strong>":</p>
+{% endif %}
+
+<div class="posts-container">
+  {% for post in posts %}
+    <div class="post-card">
+      <h2>{{ post.title }}</h2>
+      <p class="post-content">{{ post.content }}</p>
+      <div class="post-meta">
+        <small class="post-author">
+          By <a href="{% url 'user_posts' post.author.username %}">{{ post.author.username }}</a> 
+          on {{ post.date_posted }}
+          
+          <!-- Beautiful Attachment Section -->
+          {% if post.attachment %}
+            <div class="attachment-container">
+              <a href="{{ post.attachment.url }}" target="_blank" class="attachment-link">
+                <div class="attachment-icon">📎</div>
+                <div class="attachment-info">
+                  <div class="attachment-title">View Attachment</div>
+                  <div class="attachment-subtitle">Click to download or view</div>
+                </div>
+              </a>
+            </div>
+          {% endif %}
+        </small>
+        
+        {% if user == post.author %}
+          <div class="post-actions">
+            <a href="{% url 'edit_post' post.id %}" class="action-link edit-link">✏️ Edit</a>
+            <a href="{% url 'delete_post' post.id %}" class="action-link delete-link">🗑️ Delete</a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+    {% if not forloop.last %}
+      <hr class="post-divider">
+    {% endif %}
+  {% empty %}
+    <div class="no-posts">
+      <h3>📝 No posts yet!</h3>
+      <p>Be the first to share something amazing.</p>
+    </div>
+  {% endfor %}
+</div>
+
+<div class="pagination-container">
+  {% if is_paginated %}
+    {% if page_obj.has_previous %}
+      <a href="?page=1" class="pagination-link">⏮️ First</a>
+      <a href="?page={{ page_obj.previous_page_number }}" class="pagination-link">⬅️ Previous</a>
+    {% endif %}
+
+    <span class="pagination-current">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+
+    {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}" class="pagination-link">Next ➡️</a>
+      <a href="?page={{ page_obj.paginator.num_pages }}" class="pagination-link">Last ⏭️</a>
+    {% endif %}
+  {% endif %}
+</div>
+{% endblock %}
