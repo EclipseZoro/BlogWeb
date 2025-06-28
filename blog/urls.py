@@ -4,6 +4,13 @@ from .views import PostUpdateView, PostDeleteView, UserPostListView, HomeView
 from .views import profile, profile_update
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework.routers import DefaultRouter
+from .views import PostViewSet
+
+router = DefaultRouter()
+router.register(r'api/posts', PostViewSet)
+
+
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
     path('new/', views.create_post, name='create_post'),
@@ -16,7 +23,7 @@ urlpatterns = [
 
 
 ]
-
+urlpatterns += router.urls
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

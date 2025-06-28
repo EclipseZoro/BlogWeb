@@ -19,6 +19,13 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
 from django.core.mail import send_mail 
 from django.shortcuts import render, redirect
+from rest_framework import viewsets
+# from .models import Post
+from .serializers import PostSerializer
+
+class PostViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all().order_by('-date_posted')
+    serializer_class = PostSerializer
 
 from .forms import UserRegisterForm, ContactForm  
 class UserPostListView(ListView):
