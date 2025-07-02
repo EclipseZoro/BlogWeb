@@ -4,9 +4,9 @@ services:
   db:
     image: postgres:14
     environment:
-      POSTGRES_DB: blogdb
-      POSTGRES_USER: bloguser
-      POSTGRES_PASSWORD: blogpass
+      POSTGRES_DB: blogproject_xuzg
+      POSTGRES_USER: blogproject_xuzg_user
+      POSTGRES_PASSWORD: NCKWBtQDk9eSDS2EDZC4KZ0CyMv0QZXg
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     ports:
@@ -25,12 +25,12 @@ services:
     ports:
       - "8000:8000"
     environment:
-      POSTGRES_DB: blogdb
-      POSTGRES_USER: bloguser
-      POSTGRES_PASSWORD: blogpass
-      POSTGRES_HOST: db
+      POSTGRES_DB: blogproject_xuzg
+      POSTGRES_USER: blogproject_xuzg_user
+      POSTGRES_PASSWORD: NCKWBtQDk9eSDS2EDZC4KZ0CyMv0QZXg
+      POSTGRES_HOST: dpg-d1ijqimr433s73ap17ag-a
       POSTGRES_PORT: 5432
-      SECRET_KEY: your-secret-key-here
+      SECRET_KEY: django-insecure-+3mt(!3mjsbzqu$w4l^5iond10_=usuw2sb8ahe@mb828q62=h  
       DEBUG: "True"
     depends_on:
       db:
